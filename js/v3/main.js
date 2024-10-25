@@ -95,14 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'images/farmers-daughters/fd (14).jpg',
             'images/farmers-daughters/fd (15).jpg',
             
-        ],
-        "Farmer'sDaughtersVictoria": [
-            'images/farmers-daughters-victoria/1.jpg',
-            'images/farmers-daughters-victoria/2.jpg',
-            'images/farmers-daughters-victoria/3.jpg',
-            'images/farmers-daughters-victoria/4.jpg'
         ]
-        // Add more sections as needed
+        // Add more sections as needed make sure to add comma
     };
 
     // Initialize slideshows for specified sections
