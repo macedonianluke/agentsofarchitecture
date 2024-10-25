@@ -23,24 +23,10 @@ body {
     z-index: 9999;
     mix-blend-mode: difference;
     transition: transform 0.2s ease;
-    transform: translate(-50%, -50%);
 }
 
 .cursor.hover {
-    transform: translate(-50%, -50%) scale(1.5);
-}
-
-/* Ensure cursor visibility on all elements */
-a, 
-button, 
-input, 
-select, 
-textarea,
-.menu,
-.menu-toggle,
-.menu-nav,
-.menu-nav a {
-    cursor: none !important;
+    transform: scale(1.5);
 }
 
 /* Header */
