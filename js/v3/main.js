@@ -110,33 +110,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Slideshow functionality
-    const slideshowSections = {
-        "FarmersDaughters": [
-            'images/farmers-daughters/fd (1).jpg',
-            'images/farmers-daughters/fd (2).jpg',
-            'images/farmers-daughters/fd (3).jpg',
-            'images/farmers-daughters/fd (4).jpg',
-            'images/farmers-daughters/fd (5).jpg',
-            'images/farmers-daughters/fd (6).jpg',
-            'images/farmers-daughters/fd (7).jpg',
-            'images/farmers-daughters/fd (8).jpg',
-            'images/farmers-daughters/fd (9).jpg',
-            'images/farmers-daughters/fd (10).jpg',
-            'images/farmers-daughters/fd (11).jpg',
-            'images/farmers-daughters/fd (12).jpg',
-            'images/farmers-daughters/fd (13).jpg',
-            'images/farmers-daughters/fd (14).jpg',
-            'images/farmers-daughters/fd (15).jpg'
-        ]
-        // Add more sections as needed
-    };
+    // Replace or update the slideshow initialization code in main.js
+const slideshowSections = {
+    "FarmersDaughters": [
+        'images/farmers-daughters/fd (1).jpg',
+        'images/farmers-daughters/fd (2).jpg',
+        'images/farmers-daughters/fd (3).jpg',
+        'images/farmers-daughters/fd (4).jpg',
+        'images/farmers-daughters/fd (5).jpg',
+        'images/farmers-daughters/fd (6).jpg',
+        'images/farmers-daughters/fd (7).jpg',
+        'images/farmers-daughters/fd (8).jpg',
+        'images/farmers-daughters/fd (9).jpg',
+        'images/farmers-daughters/fd (10).jpg',
+        'images/farmers-daughters/fd (11).jpg',
+        'images/farmers-daughters/fd (12).jpg',
+        'images/farmers-daughters/fd (13).jpg',
+        'images/farmers-daughters/fd (14).jpg',
+        'images/farmers-daughters/fd (15).jpg'
+    ]
+};
 
-    // Initialize slideshows
+function initializeSlideshows() {
     Object.entries(slideshowSections).forEach(([sectionId, images]) => {
-        console.log(`Initializing slideshow for section: ${sectionId}`);
-        
-        const section = document.querySelector(`#${sectionId}`);
+        const section = document.getElementById(sectionId);
         if (!section) {
             console.error(`Section with ID ${sectionId} not found`);
             return;
@@ -148,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Clear existing images
+        // Clear any existing content
         slideshowContainer.innerHTML = '';
 
         // Create and append images
@@ -160,24 +157,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         let currentImageIndex = 0;
+        const totalImages = images.length;
 
         function nextImage() {
-            const images = slideshowContainer.querySelectorAll('.slideshow-image');
-            if (images.length === 0) return;
+            const currentImage = slideshowContainer.querySelector('.slideshow-image.active');
+            if (currentImage) {
+                currentImage.classList.remove('active');
+            }
 
-            const currentImage = images[currentImageIndex];
-            const nextIndex = (currentImageIndex + 1) % images.length;
-            const nextImage = images[nextIndex];
-
-            if (currentImage) currentImage.classList.remove('active');
-            if (nextImage) nextImage.classList.add('active');
-            
-            currentImageIndex = nextIndex;
+            currentImageIndex = (currentImageIndex + 1) % totalImages;
+            const nextImage = slideshowContainer.children[currentImageIndex];
+            if (nextImage) {
+                nextImage.classList.add('active');
+            }
         }
 
-        // Change image every 5 seconds
+        // Start the slideshow
         setInterval(nextImage, 5000);
     });
+}
+
+// Call this function when the document is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initializeSlideshows();
+});
 
     // Scroll animation functionality (optional)
     const sections = document.querySelectorAll('.section');
