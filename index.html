@@ -162,6 +162,17 @@
             </div>
         </section>
 
+        <!-- Add this right after your FarmersDaughters section -->
+        <section id="debug-overlay" class="debug-overlay" style="display: none;">
+            <div>Section Status: <span id="debug-section">❓</span></div>
+            <div>Container Status: <span id="debug-container">❓</span></div>
+            <div>Images Status: <span id="debug-images">❓</span></div>
+            <div>Active Image: <span id="debug-active">❓</span></div>
+        </section>
+
+        <!-- Add this test image to verify path resolution -->
+        <img src="images/farmers-daughters/fd (1).jpg" style="display: none;" onerror="console.error('Test image failed to load')" onload="console.log('Test image loaded successfully')" />
+
         <section id="FarmersDaughtersVictoria" class="section project">
             <video class="fullscreen-video" autoplay muted loop playsinline>
                 <source src="video/farmersDaughtersVictoria.mp4" type="video/mp4">
@@ -195,6 +206,6 @@
         </section>
     </main>
 
-    <script src="js/v3/main.js"></script>
+    <script src="js/v4/main.js"></script>
 </body>
 </html>
