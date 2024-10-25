@@ -6,11 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuButton && menu) {
         menuButton.addEventListener('click', () => {
             menu.classList.toggle('active');
-            // Optional: Toggle button text
             menuButton.textContent = menu.classList.contains('active') ? 'Close' : 'Menu';
         });
 
-        // Close menu when clicking menu links
         const menuLinks = document.querySelectorAll('.menu-nav a');
         menuLinks.forEach(link => {
             link.addEventListener('click', () => {
@@ -19,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Add escape key functionality to close menu
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && menu.classList.contains('active')) {
                 menu.classList.remove('active');
@@ -40,13 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let mouseY = 0;
     let cursorX = 0;
     let cursorY = 0;
+    let isHovering = false;
 
     function updateCursor() {
+        // Use different smoothing factors based on whether hovering over interactive elements
+        const smoothing = isHovering ? 0.35 : 0.25; // Increased from 0.1 to 0.25/0.35
+        
         const dx = mouseX - cursorX;
         const dy = mouseY - cursorY;
         
-        cursorX += dx * 0.1;
-        cursorY += dy * 0.1;
+        cursorX += dx * smoothing;
+        cursorY += dy * smoothing;
         
         cursor.style.left = `${cursorX}px`;
         cursor.style.top = `${cursorY}px`;
@@ -66,10 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
     interactiveElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
             cursor.classList.add('hover');
+            isHovering = true;
         });
         
         el.addEventListener('mouseleave', () => {
             cursor.classList.remove('hover');
+            isHovering = false;
         });
     });
 
