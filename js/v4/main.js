@@ -10,7 +10,8 @@ function debug(message, type = 'log') {
     console[type](`%c[Debug] ${message}`, styles[type]);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// Main initialization
+document.addEventListener('DOMContentLoaded', function() {
     debug('DOM Content Loaded', 'success');
 
     // Cursor functionality
@@ -20,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
         debug('Cursor element not found', 'error');
         return;
     }
-    debug('Cursor element found', 'success');
 
     let mouseX = 0;
     let mouseY = 0;
@@ -49,18 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     updateCursor();
-    debug('Cursor initialization complete', 'success');
 
     // Menu functionality
     const menuButton = document.querySelector('.menu-toggle');
     const menu = document.querySelector('.menu');
     
     if (menuButton && menu) {
-        debug('Menu elements found', 'success');
         menuButton.addEventListener('click', () => {
             menu.classList.toggle('active');
             menuButton.textContent = menu.classList.contains('active') ? 'Close' : 'Menu';
-            debug(`Menu ${menu.classList.contains('active') ? 'opened' : 'closed'}`);
         });
 
         const menuLinks = document.querySelectorAll('.menu-nav a');
@@ -68,11 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
             link.addEventListener('click', () => {
                 menu.classList.remove('active');
                 menuButton.textContent = 'Menu';
-                debug('Menu link clicked, menu closed');
             });
         });
-    } else {
-        debug('Menu elements not found', 'error');
     }
 
     // Interactive elements cursor effect
@@ -89,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
             isHovering = false;
         });
     });
-    debug('Interactive elements initialized', 'success');
 
     document.addEventListener('mouseenter', () => {
         cursor.style.opacity = '1';
@@ -119,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
             video.play().catch(err => {
                 debug(`Error playing video for ${section.id}: ${err}`, 'error');
             });
-            debug(`Video loaded and playing for ${section.id}`, 'success');
         });
     }
 
@@ -129,9 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const section = document.getElementById(sectionId);
         if (section) {
             initializeVideo(section);
-            debug(`Video section found: ${sectionId}`, 'success');
-        } else {
-            debug(`Video section not found: ${sectionId}`, 'error');
         }
     });
 
@@ -165,37 +154,29 @@ document.addEventListener('DOMContentLoaded', () => {
             debug(`Section #${sectionId} not found!`, 'error');
             return;
         }
-        debug(`Found section #${sectionId}`, 'success');
 
         const slideshowContainer = section.querySelector('.slideshow-container');
         if (!slideshowContainer) {
             debug(`Slideshow container not found in #${sectionId}!`, 'error');
-            debug(`Section HTML: ${section.innerHTML}`, 'warn');
             return;
         }
-        debug(`Found slideshow container`, 'success');
 
         // Clear container
         slideshowContainer.innerHTML = '';
-        debug(`Cleared slideshow container`);
 
         // Create and append images
         images.forEach((src, index) => {
-            debug(`Creating image ${index + 1}: ${src}`);
-            
-            // Test image loading
-            const testImg = new Image();
-            testImg.onload = () => debug(`Image loaded successfully: ${src}`, 'success');
-            testImg.onerror = () => debug(`Failed to load image: ${src}`, 'error');
-            testImg.src = src;
-
             const img = document.createElement('div');
             img.className = `slideshow-image ${index === 0 ? 'active' : ''}`;
             img.style.backgroundImage = `url(${src})`;
             slideshowContainer.appendChild(img);
+            
+            // Debug image loading
+            const testImg = new Image();
+            testImg.onload = () => debug(`Image loaded: ${src}`, 'success');
+            testImg.onerror = () => debug(`Failed to load image: ${src}`, 'error');
+            testImg.src = src;
         });
-
-        debug(`Created ${images.length} slideshow images`);
 
         let currentImageIndex = 0;
         const totalImages = images.length;
@@ -204,28 +185,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentImage = slideshowContainer.querySelector('.slideshow-image.active');
             if (currentImage) {
                 currentImage.classList.remove('active');
-                debug(`Deactivated image ${currentImageIndex}`);
             }
 
             currentImageIndex = (currentImageIndex + 1) % totalImages;
             const nextImage = slideshowContainer.children[currentImageIndex];
             if (nextImage) {
                 nextImage.classList.add('active');
-                debug(`Activated image ${currentImageIndex}`);
             }
         }
 
         // Start the slideshow
-        const slideshowInterval = setInterval(nextImage, 5000);
-        debug(`Started slideshow interval for ${sectionId}`, 'success');
-        
-        // Update debug overlay if it exists
-        const debugOverlay = document.getElementById('debug-overlay');
-        if (debugOverlay) {
-            document.getElementById('debug-section').textContent = '✓';
-            document.getElementById('debug-container').textContent = '✓';
-            document.getElementById('debug-images').textContent = images.length;
-        }
+        setInterval(nextImage, 5000);
     });
 
     // Scroll animation functionality
@@ -238,19 +208,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                const content = entry.target.querySelector('.section-content');
-                if (content) {
-                    content.classList.add('visible');
-                    debug(`Section content visible: ${entry.target.id}`, 'success');
-                }
+                entry.target.querySelector('.section-content')?.classList.add('visible');
             }
         });
     }, observerOptions);
 
     sections.forEach(section => {
         sectionObserver.observe(section);
-        debug(`Observing section: ${section.id}`);
     });
-
-    debug('All initializations complete', 'success');
 });
