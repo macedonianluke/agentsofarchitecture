@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agents of Architecture</title>
-    <link rel="stylesheet" href="css/v3/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="cursor"></div>
@@ -145,16 +145,16 @@
         </section>
 
         <section id="Farmer'sDaughters" class="section project">
-            <div class="slideshow-container">
-                <!-- Images will be added via JavaScript -->
-            </div>
+            <video class="fullscreen-video" autoplay muted loop playsinline>
+                <source src="video/farmersDaughters.mp4" type="video/mp4">
+            </video>
             <div class="overlay"></div>
             <div class="section-content">
                 <div class="project-info">
                     <h2>Farmer's Daughters</h2>
                     <p>80 Collins Street, Melbourne, Australia, 2023</p>
                     <div class="project-description">
-                        A multi-level experiential restaurant and bar design that celebrates the theatrical aspects of culinary artistry...
+                        A multi-level experiential restaurant and bar design that celebrates the theatrical aspects of culinary artistry. This space exposes the function and artistry of food preparation, creating an immersive dining experience. From open kitchens to strategically placed prep stations, every touchpoint is designed to showcase the movement and craft behind each dish, turning dining into a captivating performance.
                     </div>
                 </div>
             </div>
@@ -193,6 +193,6 @@
         </section>
     </main>
 
-    <script src="js/v3/main.js"></script>
+    <script src="js/v2/main.js"></script>
 </body>
 </html>

@@ -79,10 +79,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // New Slideshow Functionality
     const slideshowSections = {
         "Farmer'sDaughters": [
-            'images/farmers-daughters/1.jpg',
-            'images/farmers-daughters/2.jpg',
-            'images/farmers-daughters/3.jpg',
-            'images/farmers-daughters/4.jpg'
+            'images/farmers-daughters/fd (1).jpg',
+            'images/farmers-daughters/fd (2).jpg',
+            'images/farmers-daughters/fd (3).jpg',
+            'images/farmers-daughters/fd (4).jpg',
+            'images/farmers-daughters/fd (5).jpg',
+            'images/farmers-daughters/fd (6).jpg',
+            'images/farmers-daughters/fd (7).jpg',
+            'images/farmers-daughters/fd (8).jpg',
+            'images/farmers-daughters/fd (9).jpg',
+            'images/farmers-daughters/fd (10).jpg',
+            'images/farmers-daughters/fd (11).jpg',
+            'images/farmers-daughters/fd (12).jpg',
+            'images/farmers-daughters/fd (13).jpg',
+            'images/farmers-daughters/fd (14).jpg',
+            'images/farmers-daughters/fd (15).jpg',
+            
         ],
         "Farmer'sDaughtersVictoria": [
             'images/farmers-daughters-victoria/1.jpg',
