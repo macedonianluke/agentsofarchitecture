@@ -1,33 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cursor = document.querySelector('.cursor');
-    const menu = document.querySelector('.menu');
+    // Menu functionality
     const menuButton = document.querySelector('.menu-toggle');
+    const menu = document.querySelector('.menu');
     
-    // Convert "Menu" text to a button if it doesn't exist
-    if (!menuButton) {
-        const menuText = document.querySelector('div:contains("Menu")');
-        if (menuText) {
-            const button = document.createElement('button');
-            button.className = 'menu-toggle';
-            button.textContent = 'Menu';
-            menuText.replaceWith(button);
-        }
-    }
-    
-    // Add menu toggle functionality
-    document.querySelector('.menu-toggle')?.addEventListener('click', () => {
-        menu?.classList.toggle('active');
-    });
-
-    // Close menu when clicking menu links
-    const menuLinks = document.querySelectorAll('.menu-nav a');
-    menuLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            menu?.classList.remove('active');
+    if (menuButton && menu) {
+        menuButton.addEventListener('click', () => {
+            menu.classList.toggle('active');
+            // Optional: Toggle button text
+            menuButton.textContent = menu.classList.contains('active') ? 'Close' : 'Menu';
         });
-    });
 
-    // Existing cursor code
+        // Close menu when clicking menu links
+        const menuLinks = document.querySelectorAll('.menu-nav a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('active');
+                menuButton.textContent = 'Menu';
+            });
+        });
+
+        // Add escape key functionality to close menu
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && menu.classList.contains('active')) {
+                menu.classList.remove('active');
+                menuButton.textContent = 'Menu';
+            }
+        });
+    }
+
+    // Cursor functionality
+    const cursor = document.querySelector('.cursor');
+    
     if (!cursor) {
         console.error('Cursor element not found');
         return;
