@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // New Slideshow Functionality
     const slideshowSections = {
-        "Farmer'sDaughters": [
+        "FarmersDaughters": [
             'images/farmers-daughters/fd (1).jpg',
             'images/farmers-daughters/fd (2).jpg',
             'images/farmers-daughters/fd (3).jpg',
@@ -101,11 +101,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize slideshows for specified sections
     Object.entries(slideshowSections).forEach(([sectionId, images]) => {
-        const section = document.getElementById(sectionId);
-        if (!section) return;
+        // Log for debugging
+        console.log(`Initializing slideshow for section: ${sectionId}`);
+        
+        const section = document.querySelector(`#${sectionId}`);
+        if (!section) {
+            console.error(`Section with ID ${sectionId} not found`);
+            return;
+        }
 
         const slideshowContainer = section.querySelector('.slideshow-container');
-        if (!slideshowContainer) return;
+        if (!slideshowContainer) {
+            console.error(`Slideshow container not found in section ${sectionId}`);
+            return;
+        }
+
+        // Clear any existing images
+        slideshowContainer.innerHTML = '';
 
         // Create and append images
         images.forEach((src, index) => {
