@@ -7,60 +7,87 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <div class="cursor"></div>
+    
     <header>
         <a href="#" class="logo">AOA</a>
         <nav>
-            <a href="#work">Work</a>
-            <a href="#studio">Studio</a>
-            <a href="#contact">Contact</a>
+            <button class="menu-toggle">Menu</button>
         </nav>
     </header>
 
-    <div class="scroll-container">
+    <div class="menu">
+        <div class="menu-content">
+            <nav class="menu-nav">
+                <a href="#work">Work</a>
+                <a href="#nova-heights">Nova Heights</a>
+                <a href="#void">The Void</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+    </div>
+
+    <main class="scroll-container">
         <section id="hero" class="section">
-            <div class="section-bg" style="background-image: url('images/hero.jpg')"></div>
+            <video class="fullscreen-video" autoplay muted loop playsinline>
+                <source src="videos/hero.mp4" type="video/mp4">
+            </video>
             <div class="overlay"></div>
             <div class="section-content">
-                <h2 class="hero-subtitle">Agents of Architecture</h2>
-                <h1 class="hero-title">Shape Tomorrow</h1>
+                <div class="hero-text">
+                    <h1>Agents of Architecture</h1>
+                    <p>Shaping the future through innovative design</p>
+                </div>
             </div>
         </section>
 
-        <section id="project1" class="section">
-            <div class="section-bg" style="background-image: url('images/nova-heights.jpg')"></div>
+        <section id="nova-heights" class="section project">
+            <video class="fullscreen-video" autoplay muted loop playsinline>
+                <source src="videos/nova-heights.mp4" type="video/mp4">
+            </video>
             <div class="overlay"></div>
             <div class="section-content">
-                <h2 class="project-title">Nova Heights</h2>
-                <p>A revolutionary approach to vertical living, where nature and architecture exist in perfect harmony. Tokyo, 2024</p>
+                <div class="project-info">
+                    <h2>Nova Heights</h2>
+                    <p>Tokyo, 2024</p>
+                    <div class="project-description">
+                        A revolutionary approach to vertical living, where nature and architecture exist in perfect harmony.
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section id="project2" class="section">
-            <div class="section-bg" style="background-image: url('images/void.jpg')"></div>
+        <section id="void" class="section project">
+            <video class="fullscreen-video" autoplay muted loop playsinline>
+                <source src="videos/void.mp4" type="video/mp4">
+            </video>
             <div class="overlay"></div>
             <div class="section-content">
-                <h2 class="project-title">The Void</h2>
-                <p>Redefining negative space in urban contexts. An immersive cultural center in Oslo, 2023</p>
+                <div class="project-info">
+                    <h2>The Void</h2>
+                    <p>Oslo, 2023</p>
+                    <div class="project-description">
+                        Redefining negative space in urban contexts. An immersive cultural center.
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section id="project3" class="section">
-            <div class="section-bg" style="background-image: url('images/contact.jpg')"></div>
-            <div class="overlay"></div>
-            <div class="section-content">
-                <h2 class="project-title">Contact</h2>
-                <p>Copenhagen • Tokyo • Oslo<br>info@aoa.architecture</p>
+        <section id="contact" class="section">
+            <div class="section-content contact-content">
+                <div class="contact-info">
+                    <h2>Contact</h2>
+                    <div class="offices">
+                        <span>Copenhagen</span>
+                        <span>Tokyo</span>
+                        <span>Oslo</span>
+                    </div>
+                    <a href="mailto:info@aoa.architecture" class="email">info@aoa.architecture</a>
+                </div>
             </div>
         </section>
-    </div>
+    </main>
 
-    <div class="scroll-indicator">
-        <span class="scroll-text">Scroll</span>
-        <div class="scroll-progress"></div>
-    </div>
-
-    <div class="year">
-        Est. 2024
-    </div>
+    <script src="js/main.js"></script>
 </body>
 </html>

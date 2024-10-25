@@ -1,0 +1,185 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    color: white;
+    overflow-x: hidden;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo {
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    font-size: 1.5rem;
+    transition: opacity 0.3s ease;
+}
+
+.logo:hover {
+    opacity: 0.8;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 2rem;
+    transition: opacity 0.3s ease;
+}
+
+nav a:hover {
+    opacity: 0.8;
+}
+
+.scroll-container {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+}
+
+.section {
+    height: 100vh;
+    position: relative;
+    scroll-snap-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a1a;
+    transition: transform 0.5s ease;
+}
+
+.section:hover .section-bg {
+    transform: scale(1.05);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.section-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+.hero-title {
+    font-size: 4rem;
+    letter-spacing: 2px;
+}
+
+.project-title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.section-content p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    opacity: 0.8;
+}
+
+.scroll-indicator {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: white;
+    z-index: 100;
+}
+
+.scroll-text {
+    display: block;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+}
+
+.scroll-progress {
+    width: 2px;
+    height: 60px;
+    background: white;
+    margin: 0 auto;
+}
+
+.year {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    color: white;
+    z-index: 100;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .project-title {
+        font-size: 2.5rem;
+    }
+
+    .section-content p {
+        font-size: 1rem;
+    }
+
+    nav a {
+        margin-left: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 1rem;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .project-title {
+        font-size: 2rem;
+    }
+}
