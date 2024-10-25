@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateCursor() {
         // Use different smoothing factors based on whether hovering over interactive elements
-        const smoothing = isHovering ? 0.35 : 0.25; // Increased from 0.1 to 0.25/0.35
+        const smoothing = isHovering ? 0.35 : 0.45; // Increased from 0.1 to 0.25/0.35
         
         const dx = mouseX - cursorX;
         const dy = mouseY - cursorY;
