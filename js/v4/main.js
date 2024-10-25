@@ -1,13 +1,16 @@
 // Debug utility function
 function debug(message, type = 'log') {
-    const styles = {
-        log: 'color: #2196F3',
-        error: 'color: #F44336',
-        warn: 'color: #FF9800',
-        success: 'color: #4CAF50'
-    };
-    
-    console[type](`%c[Debug] ${message}`, styles[type]);
+    // Only log in development
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        const styles = {
+            log: 'color: #2196F3',
+            error: 'color: #F44336',
+            warn: 'color: #FF9800',
+            success: 'color: #4CAF50'
+        };
+        
+        console[type](`%c[Debug] ${message}`, styles[type]);
+    }
 }
 
 // Main initialization
@@ -145,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ]
     };
 
-    // Initialize slideshows
+        // Update this part in the slideshow initialization
     Object.entries(slideshowSections).forEach(([sectionId, images]) => {
         debug(`Starting slideshow initialization for ${sectionId}`);
         
@@ -161,21 +164,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Clear container
+        // Clear container quietly
         slideshowContainer.innerHTML = '';
 
-        // Create and append images
+        // Create and append images without test images
         images.forEach((src, index) => {
             const img = document.createElement('div');
             img.className = `slideshow-image ${index === 0 ? 'active' : ''}`;
             img.style.backgroundImage = `url(${src})`;
             slideshowContainer.appendChild(img);
-            
-            // Debug image loading
-            const testImg = new Image();
-            testImg.onload = () => debug(`Image loaded: ${src}`, 'success');
-            testImg.onerror = () => debug(`Failed to load image: ${src}`, 'error');
-            testImg.src = src;
         });
 
         let currentImageIndex = 0;

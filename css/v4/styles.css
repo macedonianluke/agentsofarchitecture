@@ -229,12 +229,8 @@ header {
     line-height: 1.6;
 }
 
-/* Slideshow Styles */
-.slideshow-section {
-    position: relative;
-}
 
-/*
+/* Update or add these styles to your CSS */
 .slideshow-container {
     position: absolute;
     top: 0;
@@ -259,20 +255,8 @@ header {
 .slideshow-image.active {
     opacity: 1;
 }
-    */
 
-/* Debug styles for slideshow elements */
-.slideshow-container {
-    border: 2px solid red; /* Temporary - to see container bounds */
-}
 
-.slideshow-image {
-    border: 2px solid blue; /* Temporary - to see image bounds */
-}
-
-.slideshow-image.active {
-    border-color: green; /* Temporary - to see active image */
-}
 
 /* Contact Section */
 .contact-content {
