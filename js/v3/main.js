@@ -110,29 +110,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Replace or update the slideshow initialization code in main.js
-const slideshowSections = {
-    "FarmersDaughters": [
-        'images/farmers-daughters/fd (1).jpg',
-        'images/farmers-daughters/fd (2).jpg',
-        'images/farmers-daughters/fd (3).jpg',
-        'images/farmers-daughters/fd (4).jpg',
-        'images/farmers-daughters/fd (5).jpg',
-        'images/farmers-daughters/fd (6).jpg',
-        'images/farmers-daughters/fd (7).jpg',
-        'images/farmers-daughters/fd (8).jpg',
-        'images/farmers-daughters/fd (9).jpg',
-        'images/farmers-daughters/fd (10).jpg',
-        'images/farmers-daughters/fd (11).jpg',
-        'images/farmers-daughters/fd (12).jpg',
-        'images/farmers-daughters/fd (13).jpg',
-        'images/farmers-daughters/fd (14).jpg',
-        'images/farmers-daughters/fd (15).jpg'
-    ]
-};
+    // Slideshow functionality
+    const slideshowSections = {
+        "FarmersDaughters": [
+            'images/farmers-daughters/fd (1).jpg',
+            'images/farmers-daughters/fd (2).jpg',
+            'images/farmers-daughters/fd (3).jpg',
+            'images/farmers-daughters/fd (4).jpg',
+            'images/farmers-daughters/fd (5).jpg',
+            'images/farmers-daughters/fd (6).jpg',
+            'images/farmers-daughters/fd (7).jpg',
+            'images/farmers-daughters/fd (8).jpg',
+            'images/farmers-daughters/fd (9).jpg',
+            'images/farmers-daughters/fd (10).jpg',
+            'images/farmers-daughters/fd (11).jpg',
+            'images/farmers-daughters/fd (12).jpg',
+            'images/farmers-daughters/fd (13).jpg',
+            'images/farmers-daughters/fd (14).jpg',
+            'images/farmers-daughters/fd (15).jpg'
+        ]
+    };
 
-function initializeSlideshows() {
+    // Initialize slideshows
     Object.entries(slideshowSections).forEach(([sectionId, images]) => {
+        console.log(`Initializing slideshow for ${sectionId}`); // Debug log
+        
         const section = document.getElementById(sectionId);
         if (!section) {
             console.error(`Section with ID ${sectionId} not found`);
@@ -154,6 +156,9 @@ function initializeSlideshows() {
             img.className = `slideshow-image ${index === 0 ? 'active' : ''}`;
             img.style.backgroundImage = `url(${src})`;
             slideshowContainer.appendChild(img);
+            
+            // Debug log for image creation
+            console.log(`Created image element with src: ${src}`);
         });
 
         let currentImageIndex = 0;
@@ -174,15 +179,12 @@ function initializeSlideshows() {
 
         // Start the slideshow
         setInterval(nextImage, 5000);
+        
+        // Debug log for slideshow initialization
+        console.log(`Slideshow initialized with ${totalImages} images`);
     });
-}
 
-// Call this function when the document is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    initializeSlideshows();
-});
-
-    // Scroll animation functionality (optional)
+    // Scroll animation functionality
     const sections = document.querySelectorAll('.section');
     const observerOptions = {
         root: null,
