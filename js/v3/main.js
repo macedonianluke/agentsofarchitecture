@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Original cursor code
+    // Cursor functionality
     const cursor = document.querySelector('.cursor');
     
     if (!cursor) {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateCursor();
 
-    // Original menu code
+    // Menu functionality
     const menuButton = document.querySelector('.menu-toggle');
     const menu = document.querySelector('.menu');
     
@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Interactive elements cursor effect
     const interactiveElements = document.querySelectorAll('a, button, input, select, textarea');
     
     interactiveElements.forEach(el => {
@@ -76,7 +77,40 @@ document.addEventListener('DOMContentLoaded', () => {
         cursor.style.opacity = '0';
     });
 
-    // New Slideshow Functionality
+    // Video functionality
+    function initializeVideo(section) {
+        const video = document.createElement('video');
+        video.className = 'fullscreen-video';
+        video.loop = true;
+        video.muted = true;
+        video.playsInline = true;
+        
+        // Set the source based on section id
+        const videoSource = document.createElement('source');
+        videoSource.type = 'video/mp4';
+        videoSource.src = `videos/${section.id.toLowerCase()}.mp4`;
+        
+        video.appendChild(videoSource);
+        section.insertBefore(video, section.firstChild);
+        
+        // Play video when it's loaded
+        video.addEventListener('loadeddata', () => {
+            video.play().catch(err => {
+                console.error(`Error playing video for ${section.id}:`, err);
+            });
+        });
+    }
+
+    // Initialize videos for sections that need them
+    const videoSections = ['hero']; // Add section IDs that should have videos
+    videoSections.forEach(sectionId => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            initializeVideo(section);
+        }
+    });
+
+    // Slideshow functionality
     const slideshowSections = {
         "FarmersDaughters": [
             'images/farmers-daughters/fd (1).jpg',
@@ -93,15 +127,13 @@ document.addEventListener('DOMContentLoaded', () => {
             'images/farmers-daughters/fd (12).jpg',
             'images/farmers-daughters/fd (13).jpg',
             'images/farmers-daughters/fd (14).jpg',
-            'images/farmers-daughters/fd (15).jpg',
-            
+            'images/farmers-daughters/fd (15).jpg'
         ]
-        // Add more sections as needed make sure to add comma
+        // Add more sections as needed
     };
 
-    // Initialize slideshows for specified sections
+    // Initialize slideshows
     Object.entries(slideshowSections).forEach(([sectionId, images]) => {
-        // Log for debugging
         console.log(`Initializing slideshow for section: ${sectionId}`);
         
         const section = document.querySelector(`#${sectionId}`);
@@ -116,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Clear any existing images
+        // Clear existing images
         slideshowContainer.innerHTML = '';
 
         // Create and append images
@@ -130,17 +162,39 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentImageIndex = 0;
 
         function nextImage() {
-            const currentImage = slideshowContainer.querySelector('.slideshow-image.active');
-            const nextIndex = (currentImageIndex + 1) % images.length;
-            const nextImage = slideshowContainer.querySelectorAll('.slideshow-image')[nextIndex];
+            const images = slideshowContainer.querySelectorAll('.slideshow-image');
+            if (images.length === 0) return;
 
-            currentImage?.classList.remove('active');
-            nextImage?.classList.add('active');
+            const currentImage = images[currentImageIndex];
+            const nextIndex = (currentImageIndex + 1) % images.length;
+            const nextImage = images[nextIndex];
+
+            if (currentImage) currentImage.classList.remove('active');
+            if (nextImage) nextImage.classList.add('active');
             
             currentImageIndex = nextIndex;
         }
 
         // Change image every 5 seconds
         setInterval(nextImage, 5000);
+    });
+
+    // Scroll animation functionality (optional)
+    const sections = document.querySelectorAll('.section');
+    const observerOptions = {
+        root: null,
+        threshold: 0.1
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.querySelector('.section-content')?.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        sectionObserver.observe(section);
     });
 });
