@@ -4,40 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agents of Architecture</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Custom Cursor -->
     <div class="cursor"></div>
-    
-    <header>
-        <a href="#" class="logo">AOA</a>
-        <nav>
-            <button class="menu-toggle">Menu</button>
-        </nav>
-    </header>
 
-    <div class="menu">
-        <div class="menu-content">
-            <nav class="menu-nav">
-                <a href="#work">Work</a>
-                <a href="#Stella">Stella the Stargazer</a>
-                <a href="#Retreat ">The Retreat</a>
-                <a href="#Brumby">Brumby</a>
-                <a href="#LittleFella">Little Fella</a>
-                <a href="#Weekender">Weekender</a>
-                <a href="#Churchill">11 Churchill Street</a>
-                <a href="#FarmersDaughters">Farmer's Daughters</a>
-                <a href="#FarmersDaughtersVictoria">Farmer's Daughters Victoria</a>
-                <a href="#contact">Contact</a>
-            </nav>
-        </div>
+    <!-- Navigation -->
+    <div class="nav-wrapper">
+        <a href="#hero" class="logo">AOA</a>
+        
+        <!-- Menu Toggle -->
+        <button class="menu-toggle" aria-label="Toggle Menu">
+            <span>Menu</span>
+        </button>
     </div>
 
-    <main class="scroll-container">
+    <!-- Menu -->
+    <div class="menu">
+        <nav class="menu-content">
+            <a href="#hero">About</a>
+            <a href="#stella">Stella the Stargazer</a>
+            <a href="#Retreat">The Retreat</a>
+            <a href="#brumby">Brumby</a>
+            <a href="#littleFella">Little Fella</a>
+            <a href="#weekender">Weekender</a>
+            <a href="#churchill">11 Churchill Street</a>
+            <a href="#farmersDaughters">Farmer's Daughters</a>
+            <a href="#farmersDaughtersVictoria">Farmer's Daughters Victoria</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="scroll-container" role="main">
+        <!-- Hero Section -->
         <section id="hero" class="section">
-            <video class="fullscreen-video" autoplay muted loop playsinline>
-                <source src="videos/hero3_comp.mp4" type="video/mp4">
-            </video>
             <div class="overlay"></div>
             <div class="section-content">
                 <div class="hero-text">
@@ -47,137 +49,119 @@
             </div>
         </section>
 
+        <!-- Stella Section -->
         <section id="stella" class="section project">
-            <video class="fullscreen-video" autoplay muted loop playsinline>
-                <source src="videos/hero.mp4" type="video/mp4">
-            </video>
             <div class="overlay"></div>
             <div class="section-content">
                 <div class="project-info">
                     <h2>Stella The Stargazer</h2>
-                    <p>Victoria, Australia, 2022</p>
+                    <p class="location-date">Victoria, Australia, 2022</p>
                     <div class="project-description">
-                        A mobile event space, to evoke an emotional response and reconnect with the natural world.
+                        <p>A mobile event space, to evoke an emotional response and reconnect with the natural world.</p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Retreat Section -->
         <section id="Retreat" class="section project">
-            <video class="fullscreen-video" autoplay muted loop playsinline>
-                <source src="videos/retreat.mp4" type="video/mp4">
-            </video>
             <div class="overlay"></div>
             <div class="section-content">
                 <div class="project-info">
                     <h2>Retreat</h2>
-                    <p>Port Fairy, Australia, 2024</p>
+                    <p class="location-date">Port Fairy, Australia, 2024</p>
                     <div class="project-description">
-                        A boutique Australian prefabricated home, distilled from the quintessential vernacular of the Australian rural landscape. Handcrafted details and raw materials that strip back to the essence of home and remove the unnecessary noise of modernity.
+                        <p>A boutique Australian prefabricated home, distilled from the quintessential vernacular of the Australian rural landscape. Handcrafted details and raw materials that strip back to the essence of home and remove the unnecessary noise of modernity.</p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Brumby Section -->
         <section id="brumby" class="section project">
-            <video class="fullscreen-video" autoplay muted loop playsinline>
-                <source src="videos/brumby.mp4" type="video/mp4">
-            </video>
             <div class="overlay"></div>
             <div class="section-content">
                 <div class="project-info">
                     <h2>Brumby</h2>
-                    <p>High Country, Australia, 2023</p>
+                    <p class="location-date">High Country, Australia, 2023</p>
                     <div class="project-description">
-                        A rugged, off-grid cabin inspired by the wild horses of the Australian Alps. Blending seamlessly with its surroundings, Brumby offers a unique retreat that embodies the spirit of freedom and resilience.
+                        <p>A rugged, off-grid cabin inspired by the wild horses of the Australian Alps. Blending seamlessly with its surroundings, Brumby offers a unique retreat that embodies the spirit of freedom and resilience.</p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Little Fella Section -->
         <section id="littleFella" class="section project">
-            <video class="fullscreen-video" autoplay muted loop playsinline>
-                <source src="videos/littleFella.mp4" type="video/mp4">
-            </video>
             <div class="overlay"></div>
             <div class="section-content">
                 <div class="project-info">
                     <h2>Little Fella</h2>
-                    <p>Victoria, Australia, 2023</p>
+                    <p class="location-date">Victoria, Australia, 2023</p>
                     <div class="project-description">
-                        A compact, eco-friendly tiny home that embodies the spirit of Australian ingenuity. Designed for minimal environmental impact and maximum comfort, Little Fella proves that great things come in small packages.
+                        <p>A compact, eco-friendly tiny home that embodies the spirit of Australian ingenuity. Designed for minimal environmental impact and maximum comfort, Little Fella proves that great things come in small packages.</p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Weekender Section -->
         <section id="weekender" class="section project">
-            <video class="fullscreen-video" autoplay muted loop playsinline>
-                <source src="videos/weekender.mp4" type="video/mp4">
-            </video>
             <div class="overlay"></div>
             <div class="section-content">
                 <div class="project-info">
                     <h2>Weekender</h2>
-                    <p>Coastal Victoria, Australia, 2024</p>
+                    <p class="location-date">Coastal Victoria, Australia, 2024</p>
                     <div class="project-description">
-                        A modern interpretation of the classic Australian beach house. Designed for relaxation and connection with nature, Weekender offers a perfect escape from city life, blending indoor and outdoor living spaces seamlessly.
+                        <p>A modern interpretation of the classic Australian beach house. Designed for relaxation and connection with nature, Weekender offers a perfect escape from city life, blending indoor and outdoor living spaces seamlessly.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-
+        <!-- Churchill Section -->
         <section id="churchill" class="section project">
-            <video class="fullscreen-video" autoplay muted loop playsinline>
-                <source src="videos/churchill.mp4" type="video/mp4">
-            </video>
             <div class="overlay"></div>
             <div class="section-content">
                 <div class="project-info">
                     <h2>11 Churchill Street</h2>
-                    <p>Williamstown North, Australia, 2024</p>
+                    <p class="location-date">Williamstown North, Australia, 2024</p>
                     <div class="project-description">
-                        A bold and forthright office addition that celebrates exposed structural steel. This project seamlessly blends industrial aesthetics with functional design, creating a striking workspace that stands out in Williamstown North's architectural landscape.
+                        <p>A bold and forthright office addition that celebrates exposed structural steel. This project seamlessly blends industrial aesthetics with functional design, creating a striking workspace that stands out in Williamstown North's architectural landscape.</p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Farmer's Daughters Section -->
         <section id="farmersDaughters" class="section project">
-            <video class="fullscreen-video" autoplay muted loop playsinline>
-                <source src="videos/farmersDaughters.mp4" type="video/mp4">
-            </video>
             <div class="overlay"></div>
             <div class="section-content">
                 <div class="project-info">
                     <h2>Farmer's Daughters</h2>
-                    <p>80 Collins Street, Melbourne, Australia, 2023</p>
+                    <p class="location-date">80 Collins Street, Melbourne, Australia, 2023</p>
                     <div class="project-description">
-                        A multi-level experiential restaurant and bar design that celebrates the theatrical aspects of culinary artistry. This space exposes the function and artistry of food preparation, creating an immersive dining experience. From open kitchens to strategically placed prep stations, every touchpoint is designed to showcase the movement and craft behind each dish, turning dining into a captivating performance.
+                        <p>A multi-level experiential restaurant and bar design that celebrates the theatrical aspects of culinary artistry. This space exposes the function and artistry of food preparation, creating an immersive dining experience. From open kitchens to strategically placed prep stations, every touchpoint is designed to showcase the movement and craft behind each dish, turning dining into a captivating performance.</p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Farmer's Daughters Victoria Section -->
         <section id="farmersDaughtersVictoria" class="section project">
-            <video class="fullscreen-video" autoplay muted loop playsinline>
-                <source src="videos/farmersDaughtersVictoria.mp4" type="video/mp4">
-            </video>
             <div class="overlay"></div>
             <div class="section-content">
                 <div class="project-info">
                     <h2>Farmer's Daughters Victoria</h2>
-                    <p>Federation Square, Melbourne CBD, Australia, 2023</p>
+                    <p class="location-date">Federation Square, Melbourne CBD, Australia, 2023</p>
                     <div class="project-description">
-                        A culinary journey through Victoria, nestled in the heart of Melbourne's iconic Federation Square. This tourist hub offers a unique gastronomic experience, allowing visitors to explore the state's diverse flavors without leaving the city. The design revolves around a central, open kitchen with campfire cooking, creating a theatrical dining atmosphere. With stunning views of the Yarra River, guests can indulge in a curated menu that showcases the best of Victoria's food and beverages, all while witnessing the artistry of chefs at work in the carefully designed, exposed kitchen space.
+                        <p>A culinary journey through Victoria, nestled in the heart of Melbourne's iconic Federation Square. This tourist hub offers a unique gastronomic experience, allowing visitors to explore the state's diverse flavors without leaving the city. The design revolves around a central, open kitchen with campfire cooking, creating a theatrical dining atmosphere. With stunning views of the Yarra River, guests can indulge in a curated menu that showcases the best of Victoria's food and beverages, all while witnessing the artistry of chefs at work in the carefully designed, exposed kitchen space.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        
-
+        <!-- Contact Section -->
         <section id="contact" class="section">
             <div class="section-content contact-content">
                 <div class="contact-info">
@@ -187,12 +171,13 @@
                         <span>Mount Macedon</span>
                         <span>Port Fairy</span>
                     </div>
-                    <a href="mailto:info@agentsofarchitecture.com" class="email">info@agentsofarchitecture.com</a>
+                    <a href="mailto:info@agentsofarchitecture.com">info@agentsofarchitecture.com</a>
                 </div>
             </div>
         </section>
-    </main>
+    </div>
 
-    <script src="js/main.js"></script>
+    <!-- Scripts -->
+    <script src="main.js"></script>
 </body>
 </html>
