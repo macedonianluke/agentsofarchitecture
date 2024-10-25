@@ -1,7 +1,7 @@
 // Menu toggle functionality
 const menuToggle = document.querySelector('.menu-toggle');
 const menu = document.querySelector('.menu');
-const menuLinks = document.querySelectorAll('.menu-content a'); // Updated selector to match your HTML structure
+const menuLinks = document.querySelectorAll('.menu-content a');
 
 menuToggle?.addEventListener('click', () => {
     menu?.classList.toggle('active');
@@ -10,15 +10,13 @@ menuToggle?.addEventListener('click', () => {
 
 // Smooth scrolling for anchor links
 menuLinks.forEach((link, index) => {
-    // Add transition delay for menu animation
     link.style.transitionDelay = `${0.1 * index}s`;
     
-    // Handle click events
     link.addEventListener('click', (e) => {
         e.preventDefault();
         
-        // Get the target section id from the href
-        const targetId = link.getAttribute('href')?.replace('#', '');
+        // Get the target section id from the href, removing any encoded characters
+        const targetId = link.getAttribute('href')?.replace('#', '').replace(/%20/g, '');
         const targetSection = document.getElementById(targetId);
         
         if (targetSection) {
@@ -31,6 +29,8 @@ menuLinks.forEach((link, index) => {
                 behavior: 'smooth',
                 block: 'start'
             });
+        } else {
+            console.warn(`Section with id "${targetId}" not found`);
         }
     });
 });
