@@ -1,6 +1,5 @@
 // Debug utility function
 function debug(message, type = 'log') {
-    // Only log in development
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         const styles = {
             log: 'color: #2196F3',
@@ -8,9 +7,94 @@ function debug(message, type = 'log') {
             warn: 'color: #FF9800',
             success: 'color: #4CAF50'
         };
-        
         console[type](`%c[Debug] ${message}`, styles[type]);
     }
+}
+
+// Slideshow initialization function
+function initializeSlideshow(sectionId, images) {
+    debug(`Initializing slideshow for ${sectionId}`);
+    
+    const section = document.getElementById(sectionId);
+    if (!section) {
+        debug(`Section #${sectionId} not found!`, 'error');
+        return;
+    }
+
+    const slideshowContainer = section.querySelector('.slideshow-container');
+    if (!slideshowContainer) {
+        debug(`Slideshow container not found in #${sectionId}!`, 'error');
+        return;
+    }
+
+    // Clear existing content
+    slideshowContainer.innerHTML = '';
+
+    // Preload images
+    const imagePromises = images.map(src => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+                debug(`Image loaded: ${src}`, 'success');
+                resolve(src);
+            };
+            img.onerror = () => {
+                debug(`Failed to load image: ${src}`, 'error');
+                reject(new Error(`Failed to load ${src}`));
+            };
+            img.src = src;
+        });
+    });
+
+    // Create slideshow once images are loaded
+    Promise.allSettled(imagePromises).then(results => {
+        const loadedImages = results
+            .filter(result => result.status === 'fulfilled')
+            .map(result => result.value);
+
+        if (loadedImages.length === 0) {
+            debug('No images loaded successfully', 'error');
+            return;
+        }
+
+        debug(`${loadedImages.length} images loaded successfully`, 'success');
+
+        // Create slideshow elements
+        loadedImages.forEach((src, index) => {
+            const slideDiv = document.createElement('div');
+            slideDiv.className = `slideshow-image ${index === 0 ? 'active' : ''}`;
+            slideDiv.style.backgroundImage = `url('${src}')`;
+            slideshowContainer.appendChild(slideDiv);
+        });
+
+        // Initialize slideshow controls
+        let currentIndex = 0;
+        const slides = slideshowContainer.querySelectorAll('.slideshow-image');
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % slides.length;
+            showSlide(currentIndex);
+        }
+
+        // Start slideshow
+        const intervalId = setInterval(nextSlide, 5000);
+
+        // Cleanup on section leave
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    clearInterval(intervalId);
+                }
+            });
+        }, { threshold: 0 });
+
+        observer.observe(section);
+    });
 }
 
 // Main initialization
@@ -127,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Slideshow functionality
+    // Initialize slideshows
     const slideshowSections = {
         "FarmersDaughters": [
             'images/farmers-daughters/fd (1).jpg',
@@ -148,51 +232,8 @@ document.addEventListener('DOMContentLoaded', function() {
         ]
     };
 
-        // Update this part in the slideshow initialization
     Object.entries(slideshowSections).forEach(([sectionId, images]) => {
-        debug(`Starting slideshow initialization for ${sectionId}`);
-        
-        const section = document.getElementById(sectionId);
-        if (!section) {
-            debug(`Section #${sectionId} not found!`, 'error');
-            return;
-        }
-
-        const slideshowContainer = section.querySelector('.slideshow-container');
-        if (!slideshowContainer) {
-            debug(`Slideshow container not found in #${sectionId}!`, 'error');
-            return;
-        }
-
-        // Clear container quietly
-        slideshowContainer.innerHTML = '';
-
-        // Create and append images without test images
-        images.forEach((src, index) => {
-            const img = document.createElement('div');
-            img.className = `slideshow-image ${index === 0 ? 'active' : ''}`;
-            img.style.backgroundImage = `url(${src})`;
-            slideshowContainer.appendChild(img);
-        });
-
-        let currentImageIndex = 0;
-        const totalImages = images.length;
-
-        function nextImage() {
-            const currentImage = slideshowContainer.querySelector('.slideshow-image.active');
-            if (currentImage) {
-                currentImage.classList.remove('active');
-            }
-
-            currentImageIndex = (currentImageIndex + 1) % totalImages;
-            const nextImage = slideshowContainer.children[currentImageIndex];
-            if (nextImage) {
-                nextImage.classList.add('active');
-            }
-        }
-
-        // Start the slideshow
-        setInterval(nextImage, 5000);
+        initializeSlideshow(sectionId, images);
     });
 
     // Scroll animation functionality
@@ -205,7 +246,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.querySelector('.section-content')?.classList.add('visible');
+                const content = entry.target.querySelector('.section-content');
+                if (content) {
+                    content.classList.add('visible');
+                }
             }
         });
     }, observerOptions);
