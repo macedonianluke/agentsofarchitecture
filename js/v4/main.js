@@ -211,7 +211,89 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Initialize slideshows
+    // Slideshow initialization function
+function initializeSlideshow(sectionId, images) {
+    debug(`Initializing slideshow for ${sectionId}`, 'log');
+    
+    const section = document.getElementById(sectionId);
+    if (!section) {
+        debug(`Section #${sectionId} not found!`, 'error');
+        return;
+    }
+
+    const slideshowContainer = section.querySelector('.slideshow-container');
+    if (!slideshowContainer) {
+        debug(`Slideshow container not found in #${sectionId}!`, 'error');
+        return;
+    }
+
+    // Clear existing content
+    slideshowContainer.innerHTML = '';
+    
+    // Create and append all images immediately
+    images.forEach((src, index) => {
+        const slideDiv = document.createElement('div');
+        slideDiv.className = `slideshow-image ${index === 0 ? 'active' : ''}`;
+        slideDiv.style.backgroundImage = `url('${src}')`;
+        slideshowContainer.appendChild(slideDiv);
+        
+        // Debug message for each image
+        debug(`Created slide ${index + 1} with src: ${src}`, 'log');
+    });
+
+    // Initialize slideshow controls
+    let currentIndex = 0;
+    const slides = slideshowContainer.querySelectorAll('.slideshow-image');
+    const totalSlides = slides.length;
+
+    debug(`Total slides created: ${totalSlides}`, 'log');
+
+    function showSlide(index) {
+        debug(`Changing to slide ${index + 1}`, 'log');
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[index].classList.add('active');
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        showSlide(currentIndex);
+        debug(`Advanced to slide ${currentIndex + 1}`, 'log');
+    }
+
+    // Start the slideshow
+    const slideInterval = setInterval(nextSlide, 5000);
+    debug('Slideshow interval started', 'success');
+
+    // Add visibility observer to pause/resume slideshow
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Resume slideshow when section is visible
+                debug('Section visible - starting slideshow', 'log');
+                showSlide(currentIndex); // Show current slide immediately
+                slideInterval = setInterval(nextSlide, 5000);
+            } else {
+                // Pause slideshow when section is not visible
+                debug('Section hidden - pausing slideshow', 'log');
+                clearInterval(slideInterval);
+            }
+        });
+    }, { threshold: 0.5 }); // Trigger when 50% of section is visible
+
+    observer.observe(section);
+
+    // Optional: Add manual controls for testing
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            clearInterval(slideInterval);
+            nextSlide();
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+    });
+}
+
+// In your DOMContentLoaded event listener:
+document.addEventListener('DOMContentLoaded', function() {
     const slideshowSections = {
         "FarmersDaughters": [
             'images/farmers-daughters/fd (1).jpg',
@@ -235,6 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
     Object.entries(slideshowSections).forEach(([sectionId, images]) => {
         initializeSlideshow(sectionId, images);
     });
+});
 
     // Scroll animation functionality
     const sections = document.querySelectorAll('.section');

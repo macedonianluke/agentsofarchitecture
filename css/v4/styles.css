@@ -241,15 +241,26 @@ header {
 }
 
 .slideshow-image {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
     background-size: cover;
     background-position: center;
-    display: none; /* Hide all images initially */
+    display: block;
+    pointer-events: none; /* Prevent image interference with controls */
 }
 
 .slideshow-image.active {
-    display: block; /* Show only the active image */
+    opacity: 1;
+}
+
+/* Optional: Add fade transition */
+.slideshow-image {
+    transition: opacity 1s ease-in-out;
 }
 
 
