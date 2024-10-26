@@ -287,6 +287,81 @@ header {
     opacity: 1;
 }
 
+/* About Section Specific Styles */
+#About {
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+#About .section-content {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 4rem;
+}
+
+#About .project-info {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+#About .project-info h2 {
+    font-size: 3.5rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0;
+}
+
+#About p {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    font-weight: 300;
+    max-width: 540px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #About .section-content {
+        padding: 0 2rem;
+    }
+    
+    #About .project-info h2 {
+        font-size: 2.5rem;
+    }
+    
+    #About p {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #About .section-content {
+        padding: 0 1.5rem;
+    }
+    
+    #About .project-info {
+        gap: 1.5rem;
+    }
+    
+    #About .project-info h2 {
+        font-size: 2rem;
+    }
+    
+    #About p {
+        font-size: 1rem;
+    }
+}
+
+
+
 /* Contact Section */
 .contact-content {
     text-align: center;
