@@ -266,6 +266,27 @@ document.addEventListener('DOMContentLoaded', function() {
             'images/farmers-daughters/fd (14).jpg',
             'images/farmers-daughters/fd (15).jpg'
         ]
+    ,
+    "FarmersDaughtersVictoria": [
+        'images/farmers-daughters-victoria/fdv (1).jpg',
+        'images/farmers-daughters-victoria/fdv (2).jpg',
+        'images/farmers-daughters-victoria/fdv (3).jpg',
+        'images/farmers-daughters-victoria/fdv (4).jpg',
+        'images/farmers-daughters-victoria/fdv (5).jpg',
+        'images/farmers-daughters-victoria/fdv (6).jpg',
+        'images/farmers-daughters-victoria/fdv (7).jpg',
+        'images/farmers-daughters-victoria/fdv (8).jpg',
+        'images/farmers-daughters-victoria/fdv (9).jpg',
+        'images/farmers-daughters-victoria/fdv (10).jpg',
+        'images/farmers-daughters-victoria/fdv (11).jpg',
+        'images/farmers-daughters-victoria/fdv (12).jpg',
+        'images/farmers-daughters-victoria/fdv (13).jpg',
+        'images/farmers-daughters-victoria/fdv (14).jpg',
+        'images/farmers-daughters-victoria/fdv (15).jpg',
+        'images/farmers-daughters-victoria/fdv (16).jpg'
+    ]
+
+
     };
 
     debug('Slideshow sections to initialize:', Object.keys(slideshowSections), 'log');
