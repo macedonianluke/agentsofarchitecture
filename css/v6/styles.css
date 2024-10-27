@@ -11,6 +11,22 @@ body {
     color: white;
     overflow: hidden;
     background: #000;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Debug Overlay */
+.debug-overlay {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    z-index: 9999;
+    font-family: monospace;
+    font-size: 12px;
 }
 
 /* Custom Cursor */
@@ -25,13 +41,15 @@ body {
     mix-blend-mode: difference;
     transition: transform 0.2s ease;
     transform: translate(-50%, -50%);
+    opacity: 0;
+    will-change: transform;
 }
 
 .cursor.hover {
     transform: translate(-50%, -50%) scale(1.5);
 }
 
-/* Interactive Elements */
+/* Ensure cursor visibility */
 a, 
 button, 
 input, 
@@ -126,6 +144,24 @@ header {
     transform: translateY(0);
 }
 
+/* Menu Scrollbar */
+.menu-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.menu-content::-webkit-scrollbar-track {
+    background: #000;
+}
+
+.menu-content::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+
+.menu-content::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
 /* Menu Hover Effects */
 .menu-nav a:hover {
     transform: scale(1.1);
@@ -138,6 +174,12 @@ header {
     height: 100vh;
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none;
 }
 
 .section {
@@ -150,9 +192,8 @@ header {
     overflow: hidden;
 }
 
-/* Video and Slideshow */
-.fullscreen-video,
-.slideshow-container {
+/* Video Styles */
+.fullscreen-video {
     position: absolute;
     top: 0;
     left: 0;
@@ -186,20 +227,24 @@ header {
     animation: fadeIn 1s ease forwards;
 }
 
+.section-content.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* Hero Section */
 .hero-text {
     max-width: 600px;
 }
 
 .hero-text h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: 3.5rem;
     margin-bottom: 1rem;
     font-weight: 300;
-    letter-spacing: -0.02em;
 }
 
 .hero-text p {
-    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-size: 1.2rem;
     opacity: 0.8;
 }
 
@@ -210,79 +255,35 @@ header {
 
 .project-info {
     max-width: 500px;
-    padding: 1.5rem;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(8px);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
 }
 
 .project-info h2 {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
     font-weight: 300;
-    letter-spacing: -0.02em;
 }
 
 .project-info p {
-    font-size: clamp(0.875rem, 2vw, 1rem);
+    font-size: 1rem;
     opacity: 0.8;
+    margin-bottom: 2rem;
 }
 
-/* Description and Toggle Button */
 .project-description {
-    position: relative;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
-    font-size: clamp(0.875rem, 3vw, 1.2rem);
+    font-size: 1.2rem;
     line-height: 1.6;
-    opacity: 0;
-}
-
-.project-description.expanded {
-    max-height: 500px;
-    opacity: 1;
-}
-
-.description-toggle {
-    position: relative;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0;
-    margin-top: 0.5rem;
-    cursor: none;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.description-toggle:hover {
-    opacity: 1;
-}
-
-.description-toggle::after {
-    content: '';
-    display: block;
-    width: 12px;
-    height: 12px;
-    border: 1px solid currentColor;
-    border-radius: 50%;
-    transition: transform 0.3s ease;
-}
-
-.description-toggle.active::after {
-    transform: rotate(180deg);
 }
 
 /* Slideshow */
+.slideshow-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
 .slideshow-image {
     position: absolute;
     top: 0;
@@ -293,12 +294,52 @@ header {
     transition: opacity 1s ease-in-out;
     background-size: cover;
     background-position: center;
-    display: block;
-    pointer-events: none;
+    background-repeat: no-repeat;
+    will-change: opacity;
 }
 
 .slideshow-image.active {
     opacity: 1;
+}
+
+/* About Section */
+#About {
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+#About .section-content {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 4rem;
+}
+
+#About .project-info {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+#About .project-info h2 {
+    font-size: 3.5rem;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0;
+}
+
+#About p {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    font-weight: 300;
+    max-width: 540px;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* Contact Section */
@@ -314,9 +355,8 @@ header {
 }
 
 .contact-info h2 {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-size: 2.5rem;
     font-weight: 300;
-    letter-spacing: -0.02em;
 }
 
 .offices {
@@ -354,25 +394,30 @@ header {
     }
 }
 
-/* Responsive Design */
+/* Responsive Styles */
 @media (max-width: 768px) {
-    header {
-        padding: 1.5rem;
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .project-info h2 {
+        font-size: 2rem;
+    }
+    
+    #About .section-content {
+        padding: 0 2rem;
+    }
+    
+    #About .project-info h2 {
+        font-size: 2.5rem;
+    }
+    
+    #About p {
+        font-size: 1.1rem;
     }
 
-    .section-content {
-        padding: 1rem;
-        width: 90%;
-    }
-    
-    .project-info {
-        max-width: 100%;
-        padding: 1.25rem;
-    }
-    
-    .project {
-        justify-content: flex-end;
-        padding-bottom: 2rem;
+    .menu-nav a {
+        font-size: 1.2rem;
     }
     
     .offices {
@@ -382,38 +427,53 @@ header {
 }
 
 @media (max-width: 480px) {
-    header {
-        padding: 1rem;
+    .hero-text h1 {
+        font-size: 2rem;
     }
     
-    .project-info {
-        padding: 1rem;
+    .project-info h2 {
+        font-size: 1.75rem;
     }
     
-    .section-content {
-        width: 95%;
-        padding: 0.75rem;
+    #About .section-content {
+        padding: 0 1.5rem;
     }
     
-    .description-toggle {
-        font-size: 0.7rem;
+    #About .project-info {
+        gap: 1.5rem;
+    }
+    
+    #About .project-info h2 {
+        font-size: 2rem;
+    }
+    
+    #About p {
+        font-size: 1rem;
+    }
+
+    .menu-nav a {
+        font-size: 1rem;
+    }
+    
+    .contact-info {
+        gap: 1.5rem;
+    }
+
+    .social-links {
+        margin-top: 0.5rem;
     }
 }
 
-/* Scrollbar Styles */
-.menu-content::-webkit-scrollbar {
-    width: 8px;
+/* Performance Optimizations */
+.section,
+.fullscreen-video,
+.slideshow-image {
+    will-change: transform, opacity;
 }
 
-.menu-content::-webkit-scrollbar-track {
-    background: #000;
-}
-
-.menu-content::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 4px;
-}
-
-.menu-content::-webkit-scrollbar-thumb:hover {
-    background: #444;
+/* Smooth Scrolling */
+@media (prefers-reduced-motion: no-preference) {
+    .scroll-container {
+        scroll-behavior: smooth;
+    }
 }
