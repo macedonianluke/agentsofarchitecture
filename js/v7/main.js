@@ -247,52 +247,32 @@ function initializeSlideshow(sectionId, images) {
 function initializeCursor() {
     const cursor = document.querySelector('.cursor');
     if (!cursor) {
-        debug('Cursor element not found', 'error');
+        console.error('Cursor element not found');
         return;
     }
-    
-    let mouseX = 0;
-    let mouseY = 0;
-    let cursorX = 0;
-    let cursorY = 0;
-    let isHovering = false;
 
-    function updateCursor() {
-        const smoothing = isHovering ? 0.35 : 0.25;
-        cursorX += (mouseX - cursorX) * smoothing;
-        cursorY += (mouseY - cursorY) * smoothing;
-        cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-        requestAnimationFrame(updateCursor);
+    function moveCursor(e) {
+        cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
     }
 
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
+    // Add mouse move listener
+    document.addEventListener('mousemove', moveCursor);
 
-    document.addEventListener('mouseenter', () => {
-        cursor.style.opacity = '1';
-    });
-
-    document.addEventListener('mouseleave', () => {
-        cursor.style.opacity = '0';
-    });
-
+    // Add hover effect for interactive elements
     const interactiveElements = document.querySelectorAll('a, button, input, select, textarea');
     interactiveElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
             cursor.classList.add('hover');
-            isHovering = true;
         });
         
         el.addEventListener('mouseleave', () => {
             cursor.classList.remove('hover');
-            isHovering = false;
         });
     });
-
-    updateCursor();
 }
+
+// Make sure to call initializeCursor after DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeCursor);
 
 // Menu initialization
 function initializeMenu() {
