@@ -11,7 +11,7 @@ function debug(message, type = 'log') {
     }
 }
 
-// Video initialization with debug and error handling
+// Update the video initialization function
 function initializeVideo(section) {
     debug(`Initializing video for section: ${section.id}`, 'log');
     
@@ -31,14 +31,57 @@ function initializeVideo(section) {
     
     const videoSource = document.createElement('source');
     videoSource.type = 'video/mp4';
-    const videoPath = `/videos/${section.id.toLowerCase()}.mp4`;
+    
+    // Updated video path handling
+    let videoPath;
+    switch(section.id.toLowerCase()) {
+        case 'hero':
+            videoPath = 'video/Hero3.mp4';
+            break;
+        case 'about':
+            videoPath = 'video/Hero1.mp4';
+            break;
+        case 'stella':
+            videoPath = 'video/Stella.mp4';
+            break;
+        case 'retreat':
+            videoPath = 'video/Retreat.mp4';
+            break;
+        case 'brumby':
+            videoPath = 'video/Brumby.mp4';
+            break;
+        case 'littlefella':
+            videoPath = 'video/LittleFella.mp4';
+            break;
+        case 'weekender':
+            videoPath = 'video/Weekender.mp4';
+            break;
+        case 'churchill':
+            videoPath = 'video/Churchill.mp4';
+            break;
+        case 'farmersdaughters':
+            videoPath = 'video/FarmersDaughters.mp4';
+            break;
+        case 'farmersdaughtersvictoria':
+            videoPath = 'video/FarmersDaughtersVictoria.mp4';
+            break;
+        case 'zonzoestatechapel':
+            videoPath = 'video/ZonzoEstateChapel.mp4';
+            break;
+        case 'zonzoestatenegoziodelofficio':
+            videoPath = 'video/ZonzoEstateNegozioDelOfficio.mp4';
+            break;
+        case 'zonzoestatenegoziodelvino':
+            videoPath = 'video/ZonzoEstateNegozioDelVino.mp4';
+            break;        
+        default:
+            videoPath = `video/${section.id}.mp4`;
+    }
+    
     videoSource.src = videoPath;
-    
-    debug(`Attempting to load video: ${videoPath}`, 'log');
-    
     video.appendChild(videoSource);
     
-    // Insert video before the first child, but after any existing overlay
+    // Insert video before overlay
     const overlay = section.querySelector('.overlay');
     if (overlay) {
         overlay.insertAdjacentElement('beforebegin', video);
@@ -46,35 +89,74 @@ function initializeVideo(section) {
         section.insertBefore(video, section.firstChild);
     }
     
-    // Add error handling and playback management
-    video.addEventListener('loadeddata', () => {
-        debug(`Video loaded successfully for ${section.id}`, 'success');
-        video.play().catch(err => {
-            debug(`Error playing video for ${section.id}: ${err}`, 'error');
-        });
-    });
-
-    video.addEventListener('error', () => {
-        debug(`Failed to load video for ${section.id}. Error code: ${video.error ? video.error.code : 'unknown'}`, 'error');
-        video.remove();
-    });
-    
-    // Intersection observer for playback control
+    // Enhanced intersection observer for better performance
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                video.play().catch(err => {
-                    debug(`Error playing video when section became visible: ${err}`, 'error');
-                });
+                // Only play if video is ready
+                if (video.readyState >= 2) {
+                    video.play().catch(err => {
+                        debug(`Error playing video when section became visible: ${err}`, 'error');
+                    });
+                }
             } else {
+                // Important: Pause and reset when out of view
                 video.pause();
+                video.currentTime = 0; // Reset to start
             }
         });
     }, {
-        threshold: 0.5
+        threshold: 0.1, // Trigger earlier
+        rootMargin: '0px' // No margin
     });
     
+    // Video event listeners
+    video.addEventListener('loadeddata', () => {
+        debug(`Video loaded successfully for ${section.id}`, 'success');
+        // Only play if section is visible
+        if (isElementInViewport(section)) {
+            video.play().catch(err => {
+                debug(`Error playing video for ${section.id}: ${err}`, 'error');
+            });
+        }
+    });
+
+    video.addEventListener('error', (e) => {
+        debug(`Failed to load video for ${section.id}. Path: ${videoPath}, Error: ${video.error ? video.error.code : 'unknown'}`, 'error');
+        if (video.error) {
+            switch (video.error.code) {
+                case MediaError.MEDIA_ERR_ABORTED:
+                    debug('Video loading aborted', 'error');
+                    break;
+                case MediaError.MEDIA_ERR_NETWORK:
+                    debug('Network error while loading video', 'error');
+                    break;
+                case MediaError.MEDIA_ERR_DECODE:
+                    debug('Video decode error', 'error');
+                    break;
+                case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                    debug('Video format not supported', 'error');
+                    break;
+                default:
+                    debug('Unknown error while loading video', 'error');
+            }
+        }
+        video.remove();
+    });
+
+    // Start observing
     observer.observe(section);
+}
+
+// Helper function to check if element is in viewport
+function isElementInViewport(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
 }
 
 // Enhanced slideshow initialization
@@ -93,8 +175,6 @@ function initializeSlideshow(sectionId, images) {
         return;
     }
     
-    debug(`Found slideshow container for ${sectionId}`, 'success');
-    
     // Test load each image
     const imageTests = images.map((imagePath, index) => {
         return new Promise((resolve) => {
@@ -102,20 +182,12 @@ function initializeSlideshow(sectionId, images) {
             
             testImage.onload = () => {
                 debug(`Image ${index + 1} loaded successfully: ${imagePath}`, 'success');
-                resolve({
-                    success: true,
-                    path: imagePath,
-                    index: index
-                });
+                resolve({ success: true, path: imagePath, index: index });
             };
             
             testImage.onerror = () => {
                 debug(`Failed to load image ${index + 1}: ${imagePath}`, 'error');
-                resolve({
-                    success: false,
-                    path: imagePath,
-                    index: index
-                });
+                resolve({ success: false, path: imagePath, index: index });
             };
             
             testImage.src = imagePath;
@@ -140,34 +212,32 @@ function initializeSlideshow(sectionId, images) {
             slideDiv.className = `slideshow-image ${index === 0 ? 'active' : ''}`;
             slideDiv.style.backgroundImage = `url('${imageInfo.path}')`;
             slideshowContainer.appendChild(slideDiv);
-            debug(`Added slide ${index + 1} to ${sectionId}`, 'success');
         });
 
-        // Initialize slideshow controls
         let currentIndex = 0;
         const slides = slideshowContainer.querySelectorAll('.slideshow-image');
+        let slideInterval = null;
 
         function nextSlide() {
             slides[currentIndex].classList.remove('active');
             currentIndex = (currentIndex + 1) % slides.length;
             slides[currentIndex].classList.add('active');
-            debug(`Changed to slide ${currentIndex + 1} in ${sectionId}`, 'log');
         }
 
-        // Start slideshow with visibility handling
-        let slideInterval = setInterval(nextSlide, 5000);
-        
+        // Visibility observer for performance
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (!entry.isIntersecting) {
-                    clearInterval(slideInterval);
-                    debug(`Paused slideshow - ${sectionId} not visible`, 'log');
-                } else {
+                if (entry.isIntersecting) {
                     slideInterval = setInterval(nextSlide, 5000);
-                    debug(`Resumed slideshow - ${sectionId} visible`, 'log');
+                    debug(`Started slideshow for ${sectionId}`, 'log');
+                } else {
+                    if (slideInterval) {
+                        clearInterval(slideInterval);
+                        debug(`Paused slideshow for ${sectionId}`, 'log');
+                    }
                 }
             });
-        });
+        }, { threshold: 0.3 });
 
         observer.observe(section);
     });
@@ -181,8 +251,6 @@ function initializeCursor() {
         return;
     }
     
-    debug('Initializing cursor', 'log');
-    
     let mouseX = 0;
     let mouseY = 0;
     let cursorX = 0;
@@ -191,10 +259,8 @@ function initializeCursor() {
 
     function updateCursor() {
         const smoothing = isHovering ? 0.35 : 0.25;
-        
         cursorX += (mouseX - cursorX) * smoothing;
         cursorY += (mouseY - cursorY) * smoothing;
-        
         cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
         requestAnimationFrame(updateCursor);
     }
@@ -204,18 +270,14 @@ function initializeCursor() {
         mouseY = e.clientY;
     });
 
-    // Handle cursor visibility
     document.addEventListener('mouseenter', () => {
         cursor.style.opacity = '1';
-        debug('Cursor visible - mouse entered document', 'log');
     });
 
     document.addEventListener('mouseleave', () => {
         cursor.style.opacity = '0';
-        debug('Cursor hidden - mouse left document', 'log');
     });
 
-    // Initialize cursor hover effects
     const interactiveElements = document.querySelectorAll('a, button, input, select, textarea');
     interactiveElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
@@ -230,7 +292,6 @@ function initializeCursor() {
     });
 
     updateCursor();
-    debug('Cursor initialization complete', 'success');
 }
 
 // Menu initialization
@@ -243,12 +304,9 @@ function initializeMenu() {
         return;
     }
     
-    debug('Initializing menu', 'log');
-    
     menuButton.addEventListener('click', () => {
         menu.classList.toggle('active');
         menuButton.textContent = menu.classList.contains('active') ? 'Close' : 'Menu';
-        debug('Menu state toggled', 'log');
     });
 
     const menuLinks = document.querySelectorAll('.menu-nav a');
@@ -256,17 +314,13 @@ function initializeMenu() {
         link.addEventListener('click', () => {
             menu.classList.remove('active');
             menuButton.textContent = 'Menu';
-            debug('Menu closed via link click', 'log');
         });
     });
-
-    debug('Menu initialization complete', 'success');
 }
 
-// Scroll animations initialization
+// Scroll animations
 function initializeScrollAnimations() {
     const sections = document.querySelectorAll('.section');
-    debug(`Found ${sections.length} sections for scroll animations`, 'log');
     
     const observerOptions = {
         root: null,
@@ -279,7 +333,6 @@ function initializeScrollAnimations() {
                 const content = entry.target.querySelector('.section-content');
                 if (content) {
                     content.classList.add('visible');
-                    debug(`Section content visible: ${entry.target.id}`, 'success');
                 }
             }
         });
@@ -287,13 +340,12 @@ function initializeScrollAnimations() {
 
     sections.forEach(section => {
         sectionObserver.observe(section);
-        debug(`Added scroll observer to section: ${section.id}`, 'log');
     });
 }
 
 // Main initialization
 document.addEventListener('DOMContentLoaded', function() {
-    debug('DOM Content Loaded - Starting initialization', 'success');
+    debug('Starting initialization', 'log');
 
     // Initialize cursor
     initializeCursor();
@@ -301,10 +353,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize menu
     initializeMenu();
 
-    // Initialize videos for all sections that need them
-    const videoSections = ['hero', 'About', 'Stella', 'Retreat', 'Brumby', 'LittleFella', 'Weekender', 'FarmersDaughters', 'FarmersDaughtersVictoria','ZonzoEstateTheChapel','ZonzoEstateNegozioDelOfficio','ZonzoEstateNegozioDelVino','CaffeineTrader'];
-    debug(`Initializing videos for sections: ${videoSections.join(', ')}`, 'log');
-    videoSections.forEach(sectionId => {
+    // Initialize videos with proper paths
+    const videoSections = {
+        'Hero': true,
+        'About': true,
+        'Stella': true,
+        'Retreat': true,
+        'Brumby': true,
+        'LittleFella': true,
+        'Weekender': true,
+        'Churchill': true,
+        'FarmersDaughters': true,
+        'FarmersDaughtersVictoria': true,
+        'ZonzoEstateChapel': true,
+        'ZonzoEstateNegozioDelOfficio': true,
+        'ZonzoEstateNegozioDelVino': true,
+        'ZonzoEstateSpritzBar': false,
+        'CaffeineTrader': false
+    };
+
+    Object.keys(videoSections).forEach(sectionId => {
         const section = document.getElementById(sectionId);
         if (section) {
             initializeVideo(section);
@@ -349,22 +417,20 @@ document.addEventListener('DOMContentLoaded', function() {
             'images/farmers-daughters-victoria/fdv (14).jpg',
             'images/farmers-daughters-victoria/fdv (15).jpg',
             'images/farmers-daughters-victoria/fdv (16).jpg'
-        ]
-    ,
+        ],
         "CaffeineTrader": [
             'images/caffeine-trader/ct (1).jpg',
             'images/caffeine-trader/ct (2).jpg',
             'images/caffeine-trader/ct (3).jpg'
-    ]
+        ]
     };
 
     Object.entries(slideshowSections).forEach(([sectionId, images]) => {
-        debug(`Initializing slideshow for ${sectionId} with ${images.length} images`, 'log');
         initializeSlideshow(sectionId, images);
     });
 
     // Initialize scroll animations
     initializeScrollAnimations();
 
-    debug('Full initialization complete', 'success');
+    debug('Initialization complete', 'success');
 });
