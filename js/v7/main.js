@@ -66,13 +66,13 @@ function initializeVideo(section) {
             videoPath = 'video/FarmersDaughtersVictoria.mp4';
             break;
         case 'zonzoestatechapel':
-            videoPath = 'video/ZonzoEstateChapel.mp4';
+            videoPath = 'video/ZonzoChapel.mp4';
             break;
         case 'zonzoestatenegoziodelofficio':
-            videoPath = 'video/ZonzoEstateNegozioDelOfficio.mp4';
+            videoPath = 'video/ZonzoOffice.mp4';
             break;
         case 'zonzoestatenegoziodelvino':
-            videoPath = 'video/ZonzoEstateNegozioDelVino.mp4';
+            videoPath = 'video/ZonzoCellar.mp4';
             break;        
         default:
             videoPath = `video/${section.id}.mp4`;
