@@ -347,9 +347,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'FarmersDaughtersVictoria': true,
         'ZonzoEstateChapel': true,
         'ZonzoEstateNegozioDelOfficio': true,
-        'ZonzoEstateNegozioDelVino': true,
-        'ZonzoEstateSpritzBar': false,
-        'CaffeineTrader': false
+        'ZonzoEstateNegozioDelVino': true,        
     };
 
     Object.keys(videoSections).forEach(sectionId => {
