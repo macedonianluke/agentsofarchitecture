@@ -13,20 +13,6 @@ body {
     background: #000;
 }
 
-/* Debug Overlay */
-.debug-overlay {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 10px;
-    border-radius: 5px;
-    color: white;
-    z-index: 9999;
-    font-family: monospace;
-    font-size: 12px;
-}
-
 /* Custom Cursor */
 .cursor {
     width: 20px;
@@ -45,7 +31,7 @@ body {
     transform: translate(-50%, -50%) scale(1.5);
 }
 
-/* Ensure cursor visibility */
+/* Interactive Elements */
 a, 
 button, 
 input, 
@@ -140,24 +126,6 @@ header {
     transform: translateY(0);
 }
 
-/* Menu Scrollbar */
-.menu-content::-webkit-scrollbar {
-    width: 8px;
-}
-
-.menu-content::-webkit-scrollbar-track {
-    background: #000;
-}
-
-.menu-content::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 4px;
-}
-
-.menu-content::-webkit-scrollbar-thumb:hover {
-    background: #444;
-}
-
 /* Menu Hover Effects */
 .menu-nav a:hover {
     transform: scale(1.1);
@@ -182,8 +150,9 @@ header {
     overflow: hidden;
 }
 
-/* Video Styles */
-.fullscreen-video {
+/* Video and Slideshow */
+.fullscreen-video,
+.slideshow-container {
     position: absolute;
     top: 0;
     left: 0;
@@ -223,13 +192,14 @@ header {
 }
 
 .hero-text h1 {
-    font-size: 3.5rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     margin-bottom: 1rem;
     font-weight: 300;
+    letter-spacing: -0.02em;
 }
 
 .hero-text p {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 3vw, 1.2rem);
     opacity: 0.8;
 }
 
@@ -240,35 +210,79 @@ header {
 
 .project-info {
     max-width: 500px;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .project-info h2 {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
     font-weight: 300;
+    letter-spacing: -0.02em;
 }
 
 .project-info p {
-    font-size: 1rem;
+    font-size: clamp(0.875rem, 2vw, 1rem);
     opacity: 0.8;
-    margin-bottom: 2rem;
 }
 
+/* Description and Toggle Button */
 .project-description {
-    font-size: 1.2rem;
+    position: relative;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+    font-size: clamp(0.875rem, 3vw, 1.2rem);
     line-height: 1.6;
+    opacity: 0;
+}
+
+.project-description.expanded {
+    max-height: 500px;
+    opacity: 1;
+}
+
+.description-toggle {
+    position: relative;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0;
+    margin-top: 0.5rem;
+    cursor: none;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.description-toggle:hover {
+    opacity: 1;
+}
+
+.description-toggle::after {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.description-toggle.active::after {
+    transform: rotate(180deg);
 }
 
 /* Slideshow */
-.slideshow-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-}
-
 .slideshow-image {
     position: absolute;
     top: 0;
@@ -287,117 +301,6 @@ header {
     opacity: 1;
 }
 
-/* About Section Specific Styles */
-#About {
-    background-color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-}
-
-#About .section-content {
-    max-width: 1200px;
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    padding: 0 4rem;
-}
-
-#About .project-info {
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-}
-
-#About .project-info h2 {
-    font-size: 3.5rem;
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    margin: 0;
-}
-
-#About p {
-    font-size: 1.25rem;
-    line-height: 1.6;
-    font-weight: 300;
-    max-width: 540px;
-    color: rgba(255, 255, 255, 0.9);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    #About .section-content {
-        padding: 0 2rem;
-    }
-    
-    #About .project-info h2 {
-        font-size: 2.5rem;
-    }
-    
-    #About p {
-        font-size: 1.1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    #About .section-content {
-        padding: 0 1.5rem;
-    }
-    
-    #About .project-info {
-        gap: 1.5rem;
-    }
-    
-    #About .project-info h2 {
-        font-size: 2rem;
-    }
-    
-    #About p {
-        font-size: 1rem;
-    }
-}
-
-
-
-/* Contact Section */
-.contact-content {
-    text-align: center;
-}
-
-.contact-info h2 {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    font-weight: 300;
-}
-
-.offices {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 2rem;
-}
-
-.email {
-    color: white;
-    text-decoration: none;
-    font-size: 1.2rem;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 /* Contact Section */
 .contact-content {
     text-align: center;
@@ -411,8 +314,9 @@ header {
 }
 
 .contact-info h2 {
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
     font-weight: 300;
+    letter-spacing: -0.02em;
 }
 
 .offices {
@@ -438,20 +342,78 @@ header {
     opacity: 1;
 }
 
-/* Remove the fixed positioning styles that were previously used */
-.social-links {
-    position: static;
-    bottom: auto;
-    right: auto;
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-@media (max-width: 480px) {
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        padding: 1.5rem;
+    }
+
+    .section-content {
+        padding: 1rem;
+        width: 90%;
+    }
+    
+    .project-info {
+        max-width: 100%;
+        padding: 1.25rem;
+    }
+    
+    .project {
+        justify-content: flex-end;
+        padding-bottom: 2rem;
+    }
+    
     .offices {
         flex-direction: column;
         gap: 1rem;
     }
-    
-    .contact-info {
-        gap: 1.5rem;
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 1rem;
     }
+    
+    .project-info {
+        padding: 1rem;
+    }
+    
+    .section-content {
+        width: 95%;
+        padding: 0.75rem;
+    }
+    
+    .description-toggle {
+        font-size: 0.7rem;
+    }
+}
+
+/* Scrollbar Styles */
+.menu-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.menu-content::-webkit-scrollbar-track {
+    background: #000;
+}
+
+.menu-content::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+
+.menu-content::-webkit-scrollbar-thumb:hover {
+    background: #444;
 }
