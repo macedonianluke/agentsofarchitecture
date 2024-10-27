@@ -11,57 +11,119 @@ function debug(message, type = 'log') {
     }
 }
 
+// Initialize custom cursor
+function initializeCustomCursor() {
+    debug('Initializing custom cursor', 'log');
+    
+    const cursor = document.querySelector('.cursor');
+    if (!cursor) {
+        debug('Cursor element not found', 'error');
+        return null;
+    }
+    
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
+    let isHovering = false;
+
+    function updateCursor() {
+        const smoothing = isHovering ? 0.35 : 0.25;
+        
+        const dx = mouseX - cursorX;
+        const dy = mouseY - cursorY;
+        
+        cursorX += dx * smoothing;
+        cursorY += dy * smoothing;
+        
+        cursor.style.left = `${cursorX}px`;
+        cursor.style.top = `${cursorY}px`;
+        
+        requestAnimationFrame(updateCursor);
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+
+    updateCursor();
+    debug('Custom cursor initialized', 'success');
+    
+    return {
+        cursor,
+        setHovering: (value) => isHovering = value,
+        show: () => cursor.style.opacity = '1',
+        hide: () => cursor.style.opacity = '0'
+    };
+}
+
+// Initialize menu
+function initializeMenu() {
+    debug('Initializing menu', 'log');
+    
+    const menuButton = document.querySelector('.menu-toggle');
+    const menu = document.querySelector('.menu');
+    
+    if (!menuButton || !menu) {
+        debug('Menu elements not found', 'error');
+        return;
+    }
+    
+    menuButton.addEventListener('click', () => {
+        menu.classList.toggle('active');
+        menuButton.textContent = menu.classList.contains('active') ? 'Close' : 'Menu';
+        debug('Menu state toggled', 'log');
+    });
+
+    const menuLinks = document.querySelectorAll('.menu-nav a');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            menu.classList.remove('active');
+            menuButton.textContent = 'Menu';
+            debug('Menu closed via link click', 'log');
+        });
+    });
+    
+    debug('Menu initialized', 'success');
+}
+
 // Enhanced slideshow initialization
 function initializeSlideshow(sectionId, images) {
     debug(`Starting slideshow initialization for ${sectionId}`, 'log');
     
-    // First verify the section exists
     const section = document.getElementById(sectionId);
     if (!section) {
         debug(`ERROR: Section #${sectionId} not found!`, 'error');
         return;
     }
-    debug(`Found section ${sectionId}`, 'success');
 
-    // Then verify the container exists
     const slideshowContainer = section.querySelector('.slideshow-container');
     if (!slideshowContainer) {
         debug(`ERROR: Slideshow container not found in #${sectionId}!`, 'error');
         return;
     }
-    debug(`Found slideshow container`, 'success');
 
-    // Image loading verification
     debug(`Attempting to load ${images.length} images for ${sectionId}`, 'log');
     
-    // Test load each image before creating slideshow
     const imageTests = images.map((imagePath, index) => {
         return new Promise((resolve) => {
             const testImage = new Image();
             
             testImage.onload = () => {
                 debug(`Image ${index + 1} loaded successfully: ${imagePath}`, 'success');
-                resolve({
-                    success: true,
-                    path: imagePath,
-                    index: index
-                });
+                resolve({ success: true, path: imagePath, index });
             };
             
             testImage.onerror = () => {
                 debug(`Failed to load image ${index + 1}: ${imagePath}`, 'error');
-                resolve({
-                    success: false,
-                    path: imagePath,
-                    index: index
-                });
+                resolve({ success: false, path: imagePath, index });
             };
             
             testImage.src = imagePath;
         });
     });
 
-    // Process all images
     Promise.all(imageTests).then(results => {
         const loadedImages = results.filter(r => r.success);
         debug(`Successfully loaded ${loadedImages.length} of ${images.length} images`, 'log');
@@ -71,7 +133,6 @@ function initializeSlideshow(sectionId, images) {
             return;
         }
 
-        // Clear and create slideshow
         slideshowContainer.innerHTML = '';
         
         loadedImages.forEach((imageInfo, index) => {
@@ -79,30 +140,24 @@ function initializeSlideshow(sectionId, images) {
             slideDiv.className = `slideshow-image ${index === 0 ? 'active' : ''}`;
             slideDiv.style.backgroundImage = `url('${imageInfo.path}')`;
             slideshowContainer.appendChild(slideDiv);
-            debug(`Added slide ${index + 1} to container`, 'success');
         });
 
-        // Initialize slideshow controls
         let currentIndex = 0;
         const slides = slideshowContainer.querySelectorAll('.slideshow-image');
 
-        function nextSlide() {
+        const nextSlide = () => {
             slides[currentIndex].classList.remove('active');
             currentIndex = (currentIndex + 1) % slides.length;
             slides[currentIndex].classList.add('active');
-            debug(`Changed to slide ${currentIndex + 1} in ${sectionId}`, 'log');
-        }
+        };
 
-        // Start slideshow
         const slideInterval = setInterval(nextSlide, 5000);
-        debug(`Started slideshow interval for ${sectionId}`, 'success');
 
-        // Clean up when section not visible
+        // Pause slideshow when section not visible
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (!entry.isIntersecting) {
                     clearInterval(slideInterval);
-                    debug(`Paused slideshow - ${sectionId} not visible`, 'log');
                 }
             });
         });
@@ -126,8 +181,6 @@ function initializeVideo(section) {
     const videoPath = `videos/${section.id.toLowerCase()}.mp4`;
     videoSource.src = videoPath;
     
-    debug(`Attempting to load video: ${videoPath}`, 'log');
-    
     video.appendChild(videoSource);
     section.insertBefore(video, section.firstChild);
     
@@ -143,162 +196,38 @@ function initializeVideo(section) {
     });
 }
 
-// Main initialization
-document.addEventListener('DOMContentLoaded', function() {
-    debug('DOM Content Loaded - Starting initialization', 'success');
-
-    // Initialize cursor
-    const cursor = document.querySelector('.cursor');
-    if (!cursor) {
-        debug('Cursor element not found', 'error');
-    } else {
-        debug('Cursor element found', 'success');
+// Initialize descriptions with elegant toggle
+function initializeDescriptionToggles() {
+    debug('Initializing description toggles', 'log');
+    
+    const projectInfos = document.querySelectorAll('.project-info');
+    
+    projectInfos.forEach((projectInfo, index) => {
+        const description = projectInfo.querySelector('.project-description');
+        if (!description) return;
         
-        let mouseX = 0;
-        let mouseY = 0;
-        let cursorX = 0;
-        let cursorY = 0;
-        let isHovering = false;
-
-        function updateCursor() {
-            const smoothing = isHovering ? 0.35 : 0.25;
-            
-            const dx = mouseX - cursorX;
-            const dy = mouseY - cursorY;
-            
-            cursorX += dx * smoothing;
-            cursorY += dy * smoothing;
-            
-            cursor.style.left = `${cursorX}px`;
-            cursor.style.top = `${cursorY}px`;
-            
-            requestAnimationFrame(updateCursor);
-        }
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        updateCursor();
-        debug('Cursor initialization complete', 'success');
-    }
-
-    // Initialize menu
-    const menuButton = document.querySelector('.menu-toggle');
-    const menu = document.querySelector('.menu');
-    
-    if (menuButton && menu) {
-        debug('Menu elements found', 'success');
-        menuButton.addEventListener('click', () => {
-            menu.classList.toggle('active');
-            menuButton.textContent = menu.classList.contains('active') ? 'Close' : 'Menu';
-            debug('Menu state toggled', 'log');
-        });
-
-        const menuLinks = document.querySelectorAll('.menu-nav a');
-        menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.remove('active');
-                menuButton.textContent = 'Menu';
-                debug('Menu closed via link click', 'log');
-            });
-        });
-    } else {
-        debug('Menu elements not found', 'error');
-    }
-
-    // Initialize interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, input, select, textarea');
-    debug(`Found ${interactiveElements.length} interactive elements`, 'log');
-    
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursor.classList.add('hover');
-            isHovering = true;
+        const toggle = document.createElement('button');
+        toggle.className = 'description-toggle';
+        toggle.textContent = 'Details';
+        projectInfo.appendChild(toggle);
+        
+        toggle.addEventListener('click', () => {
+            const isExpanded = description.classList.contains('expanded');
+            description.classList.toggle('expanded');
+            toggle.classList.toggle('active');
+            toggle.textContent = isExpanded ? 'Details' : 'Close';
+            debug(`Description ${index + 1} ${isExpanded ? 'collapsed' : 'expanded'}`, 'log');
         });
         
-        el.addEventListener('mouseleave', () => {
-            cursor.classList.remove('hover');
-            isHovering = false;
-        });
+        debug(`Initialized description toggle ${index + 1}`, 'success');
     });
+}
 
-    // Mouse enter/leave handlers
-    document.addEventListener('mouseenter', () => {
-        cursor.style.opacity = '1';
-        debug('Cursor visible - mouse entered document', 'log');
-    });
-
-    document.addEventListener('mouseleave', () => {
-        cursor.style.opacity = '0';
-        debug('Cursor hidden - mouse left document', 'log');
-    });
-
-    // Initialize videos
-    const videoSections = ['hero'];
-    debug(`Initializing videos for sections: ${videoSections.join(', ')}`, 'log');
-    videoSections.forEach(sectionId => {
-        const section = document.getElementById(sectionId);
-        if (section) {
-            initializeVideo(section);
-        } else {
-            debug(`Video section #${sectionId} not found`, 'error');
-        }
-    });
-
-    // Initialize slideshows
-    const slideshowSections = {
-        "FarmersDaughters": [
-            'images/farmers-daughters/fd (1).jpg',
-            'images/farmers-daughters/fd (2).jpg',
-            'images/farmers-daughters/fd (3).jpg',
-            'images/farmers-daughters/fd (4).jpg',
-            'images/farmers-daughters/fd (5).jpg',
-            'images/farmers-daughters/fd (6).jpg',
-            'images/farmers-daughters/fd (7).jpg',
-            'images/farmers-daughters/fd (8).jpg',
-            'images/farmers-daughters/fd (9).jpg',
-            'images/farmers-daughters/fd (10).jpg',
-            'images/farmers-daughters/fd (11).jpg',
-            'images/farmers-daughters/fd (12).jpg',
-            'images/farmers-daughters/fd (13).jpg',
-            'images/farmers-daughters/fd (14).jpg',
-            'images/farmers-daughters/fd (15).jpg'
-        ]
-    ,
-    "FarmersDaughtersVictoria": [
-        'images/farmers-daughters-victoria/fdv (1).jpg',
-        'images/farmers-daughters-victoria/fdv (2).jpg',
-        'images/farmers-daughters-victoria/fdv (3).jpg',
-        'images/farmers-daughters-victoria/fdv (4).jpg',
-        'images/farmers-daughters-victoria/fdv (5).jpg',
-        'images/farmers-daughters-victoria/fdv (6).jpg',
-        'images/farmers-daughters-victoria/fdv (7).jpg',
-        'images/farmers-daughters-victoria/fdv (8).jpg',
-        'images/farmers-daughters-victoria/fdv (9).jpg',
-        'images/farmers-daughters-victoria/fdv (10).jpg',
-        'images/farmers-daughters-victoria/fdv (11).jpg',
-        'images/farmers-daughters-victoria/fdv (12).jpg',
-        'images/farmers-daughters-victoria/fdv (13).jpg',
-        'images/farmers-daughters-victoria/fdv (14).jpg',
-        'images/farmers-daughters-victoria/fdv (15).jpg',
-        'images/farmers-daughters-victoria/fdv (16).jpg'
-    ]
-
-
-    };
-
-    debug('Slideshow sections to initialize:', Object.keys(slideshowSections), 'log');
-    Object.entries(slideshowSections).forEach(([sectionId, images]) => {
-        debug(`Initializing slideshow for ${sectionId} with ${images.length} images`, 'log');
-        initializeSlideshow(sectionId, images);
-    });
-
-    // Initialize scroll animations
+// Initialize scroll animations
+function initializeScrollAnimations() {
+    debug('Initializing scroll animations', 'log');
+    
     const sections = document.querySelectorAll('.section');
-    debug(`Found ${sections.length} sections for scroll animations`, 'log');
-    
     const observerOptions = {
         root: null,
         threshold: 0.1
@@ -320,6 +249,104 @@ document.addEventListener('DOMContentLoaded', function() {
         sectionObserver.observe(section);
         debug(`Added scroll observer to section: ${section.id}`, 'log');
     });
+}
+
+// Main initialization
+document.addEventListener('DOMContentLoaded', function() {
+    debug('DOM Content Loaded - Starting initialization', 'success');
+
+    // Initialize custom cursor
+    const cursorController = initializeCustomCursor();
+    if (cursorController) {
+        const { cursor, setHovering, show, hide } = cursorController;
+
+        // Initialize interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, input, select, textarea');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+                setHovering(true);
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+                setHovering(false);
+            });
+        });
+
+        // Mouse enter/leave handlers
+        document.addEventListener('mouseenter', show);
+        document.addEventListener('mouseleave', hide);
+    }
+
+    // Initialize menu
+    initializeMenu();
+
+    // Initialize videos
+    const videoSections = ['hero'];
+    videoSections.forEach(sectionId => {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            initializeVideo(section);
+        }
+    });
+
+    // Initialize slideshows
+    const slideshowSections = {
+        "FarmersDaughters": [
+            'images/farmers-daughters/fd (1).jpg',
+            'images/farmers-daughters/fd (2).jpg',
+            'images/farmers-daughters/fd (3).jpg',
+            'images/farmers-daughters/fd (4).jpg',
+            'images/farmers-daughters/fd (5).jpg',
+            'images/farmers-daughters/fd (6).jpg',
+            'images/farmers-daughters/fd (7).jpg',
+            'images/farmers-daughters/fd (8).jpg',
+            'images/farmers-daughters/fd (9).jpg',
+            'images/farmers-daughters/fd (10).jpg',
+            'images/farmers-daughters/fd (11).jpg',
+            'images/farmers-daughters/fd (12).jpg',
+            'images/farmers-daughters/fd (13).jpg',
+            'images/farmers-daughters/fd (14).jpg',
+            'images/farmers-daughters/fd (15).jpg'
+        ],
+        "FarmersDaughtersVictoria": [
+            'images/farmers-daughters-victoria/fdv (1).jpg',
+            'images/farmers-daughters-victoria/fdv (2).jpg',
+            'images/farmers-daughters-victoria/fdv (3).jpg',
+            'images/farmers-daughters-victoria/fdv (4).jpg',
+            'images/farmers-daughters-victoria/fdv (5).jpg',
+            'images/farmers-daughters-victoria/fdv (6).jpg',
+            'images/farmers-daughters-victoria/fdv (7).jpg',
+            'images/farmers-daughters-victoria/fdv (8).jpg',
+            'images/farmers-daughters-victoria/fdv (9).jpg',
+            'images/farmers-daughters-victoria/fdv (10).jpg',
+            'images/farmers-daughters-victoria/fdv (11).jpg',
+            'images/farmers-daughters-victoria/fdv (12).jpg',
+            'images/farmers-daughters-victoria/fdv (13).jpg',
+            'images/farmers-daughters-victoria/fdv (14).jpg',
+            'images/farmers-daughters-victoria/fdv (15).jpg',
+            'images/farmers-daughters-victoria/fdv (16).jpg'
+        ],
+        "CaffeineTrader": [
+            'images/caffeine-trader/ct (1).jpg',
+            'images/caffeine-trader/ct (2).jpg',
+            'images/caffeine-trader/ct (3).jpg'
+        ],
+
+
+        
+    };
+
+    Object.entries(slideshowSections).forEach(([sectionId, images]) => {
+        initializeSlideshow(sectionId, images);
+    });
+
+    // Initialize description toggles
+    initializeDescriptionToggles();
+
+    // Initialize scroll animations
+    initializeScrollAnimations();
 
     debug('Full initialization complete', 'success');
 });
