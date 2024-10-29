@@ -1,0 +1,14 @@
+name: Steel Profiles Plugin
+version: 1.0.0
+description: Australian Steel Profiles for Rhino
+author: Your Name
+url: your-website.com
+platform: win
+type: utility
+python: True
+files:
+  - SteelProfilesPlugin.py
+  - profile_generator.py
+  - profile_curves.py
+  - profile_database.py
+  - icon.png 
